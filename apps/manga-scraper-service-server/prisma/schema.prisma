@@ -1,0 +1,76 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Manga {
+  createdAt   DateTime          @default(now())
+  genres      EnumMangaGenres[]
+  id          String            @id @default(cuid())
+  releaseYear Int?
+  summary     String?
+  tags        EnumMangaTags[]
+  title       String?
+  updatedAt   DateTime          @updatedAt
+}
+
+model Artist {
+  biography String?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String?
+  updatedAt DateTime @updatedAt
+}
+
+model Author {
+  biography String?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String?
+  updatedAt DateTime @updatedAt
+}
+
+model Chapter {
+  chapterNumber Int?
+  createdAt     DateTime @default(now())
+  id            String   @id @default(cuid())
+  pages         Page[]
+  title         String?
+  updatedAt     DateTime @updatedAt
+}
+
+model Genre {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String?
+  updatedAt DateTime @updatedAt
+}
+
+model Page {
+  chapter    Chapter? @relation(fields: [chapterId], references: [id])
+  chapterId  String?
+  createdAt  DateTime @default(now())
+  id         String   @id @default(cuid())
+  imageUrl   String?
+  pageNumber Int?
+  updatedAt  DateTime @updatedAt
+}
+
+model Tag {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String?
+  updatedAt DateTime @updatedAt
+}
+
+enum EnumMangaGenres {
+  Option1
+}
+
+enum EnumMangaTags {
+  Option1
+}
